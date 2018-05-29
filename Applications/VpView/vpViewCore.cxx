@@ -784,7 +784,7 @@ void vpViewCore::exportTracksToFile()
     return;
     }
 
-  QStringList files = fileDialog.selectedFiles();
+  const auto& filename = fileDialog.selectedFiles().first();
 
   QMessageBox msgBox;
   msgBox.setWindowTitle("Writing tracks...");
@@ -793,15 +793,15 @@ void vpViewCore::exportTracksToFile()
 
   int session = this->SessionView->GetCurrentSession();
   bool success;
-  if (QFileInfo(files[0]).suffix() == "json")
+  if (QFileInfo(filename).suffix() == "json")
     {
     success = this->Projects[session]->ModelIO->WriteFseTracks(
-                qPrintable(files[0]), false);
+                filename, false);
     }
   else
     {
     success = this->Projects[session]->ModelIO->WriteTracks(
-                qPrintable(files[0]));
+                filename);
     }
 
   if (!success)
